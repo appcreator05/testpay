@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Online Music - VDOSky.in</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+.post-body a {
+  color: #f9f9f9 !important;
+  text-decoration: none;
+  transition: color .3s;
+}
+      #header-wrapper{display: none;}
+      #content-wrapper > .container, #footer-ads-wrap > .container, #footer-fbm .container, #footer-wrapper .container, #header-ads-wrap > .container, #header-wrapper .container, #trending-wrap > .container, .hero-post .flex-center{padding: 0 0px;}
+      .is-single #content-wrapper > .container {
+        display: flex;justify-content: space-between;background: #000;}.item-post h1.entry-title{display: none;}.is-single #content-wrapper {padding: 0px 0 0px;}#footer-wrapper{display: none;}#post-body{margin: 0px 0 0;}
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        .sidebar {
+    height: 100vh;
+    max-height: 100%;            
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-top: 60px;
+    z-index: 5000;
+    overflow-y: auto;         
+}
+        .sidebar a { padding: 15px 20px; color: #fff; display: block; text-decoration: none; font-size: 16px; border-bottom: 1px solid #222; }
+        .sidebar a:hover, .sidebar a:active { background: #ff3b30; }
+        .closeSide { position: absolute; top: 14px; right: 20px; background: none; border: none; color: #fff; font-size: 25px; cursor: pointer; }
+        .header { display: flex; align-items: center; padding: 12px; background: #1a1a1a; position: fixed; top: 0; left: 0; right: 0; z-index: 999; width: 100%; height: 64px; box-sizing: border-box; border-bottom: 1px solid #282828; }
+        .menuBtn { background: #ff3b30; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; margin-right: 10px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        #musicSearch { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid #333; background: #262626; color: #fff; font-size: 15px; outline: none; margin: 0; }
+        #musicList { padding: 12px; margin-bottom: 190px; margin-top: 10px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        
+        /* When Top Ad is hidden (VIP or Ad-Free), maintain full 76px clearance below 64px fixed header */
+        body.vip-mode #musicList,
+        #musicList.vip-spacing,
+        #musicTopAd[style*="display: none"] ~ #musicList {
+            margin-top: 76px !important;
+        }
+        .song-item { display: flex; align-items: center; margin-bottom: 12px; background: #1c1c1e; padding: 8px 12px; border-radius: 12px; cursor: pointer; height: 62px; box-sizing: border-box; transition: transform 0.15s, background 0.2s; border: 1px solid transparent; }
+        .song-item:active { transform: scale(0.98); }
+        .song-item.active { border: 1px solid #ff3b30; background: #2a1515 !important; }
+        .song-img { width: 46px; height: 46px; border-radius: 8px; margin-right: 14px; object-fit: cover; flex-shrink: 0; }
+        .song-text-container { flex: 1; min-width: 0; overflow: hidden; }
+        .song-text-container strong { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        .song-text-container small { display: block; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #aaa; margin-top: 2px; }
+        .mini-player { position: fixed; bottom: 52px; left: 0; right: 0; background: #1a1a1a; padding: 12px 16px 14px 16px; display: none; flex-direction: column; border-radius: 20px 20px 0 0; z-index: 7000; box-shadow: 0 -8px 25px rgba(0,0,0,0.95); max-width: 800px; margin: 0 auto; box-sizing: border-box; border-top: 2px solid #ff3b30; pointer-events: auto !important; }
+        .progress-box { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 8px; color: #bbb; }
+        .progress-bar { flex: 1; accent-color: #ff3b30; cursor: pointer; height: 5px; margin: 0; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 32px; font-size: 28px; cursor: pointer; margin-bottom: 8px; }
+        .controls span, .controls button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: none !important;
+            border: none !important;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.2s;
+        }
+        .controls span:hover, .controls button:hover { transform: scale(1.1); }
+        .controls span:active, .controls button:active { transform: scale(0.95); }
+        .controls span img, .controls button img {
+            border-radius: 50%;
+            display: block;
+            object-fit: cover;
+        }
+        .modal { display: none; position: fixed; z-index: 6000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); flex-direction: column; align-items: center; justify-content: center; padding-top: calc(68px + env(safe-area-inset-top, 0px)); padding-bottom: calc(215px + env(safe-area-inset-bottom, 0px)); padding-left: 16px; padding-right: 16px; box-sizing: border-box; cursor: pointer; }
+        .modal-content { max-width: 90%; max-height: calc(100vh - 310px); border-radius: 15px; border: 2px solid #ff3b30; object-fit: contain; box-shadow: 0 10px 35px rgba(0,0,0,0.95); cursor: default; transition: transform 0.2s ease; }
+      
+.controls button {
+    background: none !important;
+    border: none !important;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.controls button:hover {
+    transform: scale(1.1);
+}
+
+.controls button img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+}
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 4999;
+    display: none;
+}
+
+/* ==========================================
+   ADVERTISING STYLES
+   ========================================== */
+.music-ad-slot-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 74px auto 8px auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.music-ad-slot-320x50-inner {
+    width: 320px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+        /* ALL ADS REMOVED - GLOBAL AD SUPPRESSION */
+        .ad-slot-300x250, .ad-label, #musicTopAd, #musicFixedFooterAd, .interstitial-modal {
+            display: none !important;
+        }
+
+        #musicList {
+            margin-top: 76px !important;
+            margin-bottom: 120px !important;
+        }
+
+        /* User's Exact Pricing Plans Style */
+        .plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .plan {
+            background: linear-gradient(180deg, #111, #000);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,.6);
+            transition: .3s;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan:hover {
+            transform: translateY(-6px);
+            border-color: #e50914;
+        }
+
+        .plan-header {
+            background: #e50914;
+            padding: 14px;
+            text-align: center;
+            font-weight: 600;
+            color: white;
+            font-size: 17px;
+        }
+
+        .plan-body {
+            padding: 24px 18px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .price {
+            font-size: 34px;
+            font-weight: 700;
+            margin: 10px 0;
+            color: white;
+        }
+
+        .duration {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .device {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: #e50914;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 15px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #b80710;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Custom Alert Popup UI */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease-in-out;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert-box {
+            background: #111;
+            border: 2px solid #e50914;
+            padding: 28px 22px;
+            border-radius: 14px;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(229, 9, 20, 0.4);
+            transform: scale(0.8);
+            transition: 0.3s ease-in-out;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .custom-alert-overlay.show .custom-alert-box {
+            transform: scale(1);
+        }
+
+        .custom-alert-box .icon {
+            font-size: 45px;
+            color: #04AA6D;
+            margin-bottom: 15px;
+        }
+
+        .custom-alert-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .custom-alert-box p {
+            margin: 0;
+            color: #ccc;
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+
+        /* Loading Spinner for Popup */
+        .alert-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-top-color: #e50914;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-top: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Custom Subscription Gate Modal */
+        .custom-gate-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 99998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .custom-gate-overlay.active {
+            display: flex;
+        }
+
+        .custom-gate-modal {
+            background: #0d0d0d;
+            border: 2px solid #e50914;
+            border-radius: 16px;
+            max-width: 960px;
+            width: 100%;
+            max-height: 94vh;
+            overflow-y: auto;
+            box-shadow: 0 16px 50px rgba(229, 9, 20, 0.45);
+            padding: 24px 18px 28px 18px;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .custom-gate-close-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #1c1c1c;
+            color: #fff;
+            border: 1px solid #333;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 10;
+        }
+
+        .custom-gate-close-btn:hover {
+            background: #e50914;
+            border-color: #e50914;
+        }
+
+        .sub-verify-box {
+            background: #141414;
+            border: 1px dashed #444;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sub-verify-box input {
+            width: 100%;
+            max-width: 380px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #000;
+            color: #fff;
+            font-size: 13.5px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .sub-verify-box input:focus {
+            border-color: #e50914;
+        }
+
+        #shorts-container-wrapper, #footer-wrapper, .item-post h1.entry-title { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Image View Modal - leaves bottom player completely visible & interactive -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span onclick="closeModal()" style="position:absolute; top:calc(15px + env(safe-area-inset-top, 0px)); right:18px; font-size:22px; cursor:pointer; z-index:7500; color: #fff; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" title="Close Poster">✕</span>
+    <img class="modal-content" id="modalImg" referrerpolicy="no-referrer" onclick="event.stopPropagation()">
+</div>
+
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- Slide-in Navigation Sidebar -->
+<div id="sidebar" class="sidebar">
+    <button class="closeSide" onclick="toggleSidebar()">✕</button>
+    <a href="index.html"><i class="fa-solid fa-house" style="margin-right: 8px;"></i> 🏠 Home Back</a>
+    <a href="javascript:void(0)" onclick="showAllSongs()"><i class="fa-solid fa-music" style="margin-right: 8px;"></i> All Songs</a>
+</div>
+
+<!-- Header with Menu & Search -->
+<div class="header">
+    <button class="menuBtn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i> Menu</button>
+    <input type="text" id="musicSearch" placeholder="Search songs, artists, movies..." onkeyup="filterMusicList()">
+</div>
+
+<!-- Music Songs List -->
+<div id="musicList">
+    <div style="text-align: center; color: #888; padding: 40px 10px;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 26px; color: #ff3b30; margin-bottom: 12px;"></i>
+        <div>Loading Music Playlist...</div>
+    </div>
+</div>
+
+<!-- Floating Mini Player -->
+<div class="mini-player" id="miniPlayer" style="bottom: 0px;">
+    <div class="controls">
+        <span onclick="prevSong()" style="cursor: pointer;" title="Previous Song">
+            <img src="preview.png" onerror="this.src='pre.png'; this.onerror=function(){this.src='https://raw.githubusercontent.com/shortsproeran-creator/mt/main/1784459478765_pre.png';}" width="42" height="42" alt="Previous">
+        </span>
+
+        <span id="playPauseBtn" onclick="togglePlay()" style="cursor: pointer;" title="Play/Pause">
+            <img id="playPauseImg" src="play.png" onerror="this.onerror=function(){this.src='https://raw.githubusercontent.com/shortsproeran-creator/mt/main/1784458824699_play.png';}" width="46" height="46" alt="Play">
+        </span>
+
+        <span onclick="nextSong()" style="cursor: pointer;" title="Next Song">
+            <img src="next.png" onerror="this.onerror=function(){this.src='https://raw.githubusercontent.com/shortsproeran-creator/mt/main/1784459478765_pre.png'; this.style.transform='scaleX(-1)';}" width="42" height="42" alt="Next">
+        </span>
+    </div>
+
+    <div class="progress-box">
+        <span id="currentTime">0:00</span>
+        <input type="range" class="progress-bar" id="audioRange" value="0" min="0" max="100">
+        <span id="durationTime">0:00</span>
+    </div>
+
+    <div id="nowPlaying" style="text-align:center; font-weight:bold; font-size: 14px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ffffff;">Not Playing</div>
+
+    <audio id="audioPlayer" preload="auto"></audio>
+</div>
+
+<!-- Custom Alert Popup UI (From User Configuration) -->
+<div class="custom-alert-overlay" id="customAlertOverlay">
+  <div class="custom-alert-box">
+    <div class="icon" id="customAlertIcon"><i class="fa-solid fa-circle-check"></i></div>
+    <h3 id="customAlertTitle">Subscribe now & Watch Play Continue</h3>
+    <p id="customAlertMessage">Recommended UPI Payment Safe And Secure</p>
+    <div class="alert-spinner" id="customAlertSpinner" style="display: none;"></div>
+    <div id="customAlertActions" style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+      <button type="button" class="btn" id="customAlertPrimaryBtn" onclick="showSubscriptionRequiredPopup('music', 'Online Music'); closeCustomAlert();"><b>VIEW SUBSCRIPTION PLANS</b></button>
+      <button type="button" class="btn" style="background: #262626;" onclick="closeCustomAlert();"><b>CLOSE</b></button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Subscription Gate Popup Modal (Opens when clicking Movie / YouTube / Game / Music without subscription) -->
+<div class="custom-gate-overlay" id="customSubGateModal">
+  <div class="custom-gate-modal">
+    <button type="button" class="custom-gate-close-btn" onclick="closeSubscriptionRequiredPopup();" title="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    
+    <div style="text-align: center; margin-bottom: 22px;">
+      <div style="display: inline-block; background: #e50914; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+        <i class="fa-solid fa-lock" style="margin-right: 4px;"></i> Subscription Required
+      </div>
+      <h1 style="font-size: 22px; font-weight: 700; color: #fff; margin: 6px 0 8px 0;" id="customGateModalTitle">Subscribe now & Watch Play Continue</h1>
+      <p style="color: #bbb; font-size: 13.5px; margin: 0 auto; max-width: 580px; line-height: 1.5;" id="customGateModalSubtitle">
+        Bina subscription kore music play kora jabe na. Nicher plan theke select korun:
+      </p>
+      <p style="color: #4ade80; font-size: 12px; font-weight: 600; margin-top: 6px;">
+        <i class="fa-solid fa-shield-halved"></i> Recommended UPI Payment Safe And Secure
+      </p>
+    </div>
+
+    <!-- 4 Pricing Plans -->
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-header">Basic Plan</div>
+        <div class="plan-body">
+          <div>
+            <div class="price">₹10.00</div>
+            <div class="duration">2 Day(s)</div>
+            <div class="device">Device Limit - 1</div>
+          </div>
+          <button type="button" data-name="Basic Plan" class="btn" onclick="selectSubscriptionPlan('Basic Plan', '10.00', 'https://rzp.io/rzp/CT7V0kp', 2);"><b>SELECT PLAN</b></button>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div class="plan-header">Premium Plan</div>
+        <div class="plan-body">
+          <div>
+            <div class="price">₹39.99</div>
+            <div class="duration">1 Month(s)</div>
+            <div class="device">Device Limit - 1</div>
+          </div>
+          <button type="button" data-name="Premium Plan" class="btn" onclick="selectSubscriptionPlan('Premium Plan', '39.99', 'https://rzp.io/rzp/eZcRkdDu', 30);"><b>SELECT PLAN</b></button>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div class="plan-header">Platinum Plan</div>
+        <div class="plan-body">
+          <div>
+            <div class="price">₹299.00</div>
+            <div class="duration">6 Month(s)</div>
+            <div class="device">Device Limit - 1</div>
+          </div>
+          <button type="button" data-name="Platinum Plan" class="btn" onclick="selectSubscriptionPlan('Platinum Plan', '299.00', 'https://rzp.io/rzp/NylbLir', 180);"><b>SELECT PLAN</b></button>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div class="plan-header">Diamond Plan</div>
+        <div class="plan-body">
+          <div>
+            <div class="price">₹579.00</div>
+            <div class="duration">1 Year(s)</div>
+            <div class="device">Device Limit - 1</div>
+          </div>
+          <button type="button" data-name="Diamond Plan" class="btn" onclick="selectSubscriptionPlan('Diamond Plan', '579.00', 'https://rzp.io/rzp/g9HuABr', 365);"><b>SELECT PLAN</b></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Already Subscribed / Auto Verify Box -->
+    <div class="sub-verify-box">
+      <div style="font-weight: 700; color: #fff; font-size: 14px; margin-bottom: 6px;">
+        <i class="fa-solid fa-circle-check" style="color: #04AA6D; margin-right: 6px;"></i> Already Paid? Auto Verify & Activate
+      </div>
+      <p style="color: #999; font-size: 12px; margin-bottom: 12px;">Enter your Razorpay Payment ID or UPI Transaction Reference Number below to activate immediately:</p>
+      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+        <input type="text" id="gateAutoVerifyInput" placeholder="Enter Payment ID / UTR (e.g. pay_Q8x9Y...)" autocomplete="off">
+        <button type="button" class="btn" style="width: auto; padding: 11px 22px; margin-bottom: 10px;" onclick="handleAutoVerifySubmit('gate');">
+          <b>AUTO VERIFY</b>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// CENTRAL SUBSCRIPTION & POPUP LOGIC
+// Bina subscription kore music play hobe na
+// ==========================================
+function isUserSubscribed() {
+    if (window.Android && typeof window.Android.isUserSubscribed === 'function') {
+        try {
+            if (window.Android.isUserSubscribed()) return true;
+        } catch (e) {}
+    }
+    try {
+        const isSub = localStorage.getItem('vdosky_subscribed');
+        const expiry = parseInt(localStorage.getItem('vdosky_sub_expiry') || '0', 10);
+        if (isSub === 'true' && expiry > Date.now()) return true;
+        else if (isSub === 'true' && expiry <= Date.now()) {
+            localStorage.removeItem('vdosky_subscribed');
+            localStorage.removeItem('vdosky_sub_expiry');
+            localStorage.removeItem('vdosky_sub_plan');
+        }
+    } catch (e) {}
+    try {
+        if (localStorage.getItem('vdosky_sub_active') === '1') {
+            const exp = new Date(localStorage.getItem('vdosky_sub_expires_at') || 0);
+            if (new Date() < exp) return true;
+        }
+    } catch (e) {}
+    return false;
+}
+
+function isUserVipSubscribed() {
+    return isUserSubscribed();
+}
+
+function showSubscriptionRequiredPopup(type = 'music', name = '') {
+    const modal = document.getElementById('customSubGateModal');
+    if (!modal) return;
+    const subEl = document.getElementById('customGateModalSubtitle');
+    if (subEl) {
+        subEl.innerHTML = `Bina subscription kore music play kora jabe na${name ? ` (<b>${name}</b>)` : ''}. Nicher plan theke select korun:`;
+    }
+    modal.classList.add('active');
+}
+
+function closeSubscriptionRequiredPopup() {
+    const modal = document.getElementById('customSubGateModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function selectSubscriptionPlan(planName, price, url, days) {
+    try {
+        localStorage.setItem('vdosky_pending_plan', planName);
+        localStorage.setItem('vdosky_pending_days', String(days || 30));
+        localStorage.setItem('vdosky_payment_started_at', String(Date.now()));
+    } catch (e) {}
+
+    if (window.Android && typeof window.Android.openExternalUrl === 'function') {
+        try { window.Android.openExternalUrl(url); } catch (e) { window.open(url, '_blank'); }
+    } else if (window.Android && typeof window.Android.openUrl === 'function') {
+        try { window.Android.openUrl(url); } catch (e) { window.open(url, '_blank'); }
+    } else {
+        window.open(url, '_blank');
+    }
+}
+
+function handleMusicAppResumeFromPayment() {
+    try {
+        const startedAt = parseInt(localStorage.getItem('vdosky_payment_started_at') || '0', 10);
+        if (!startedAt) return;
+        const timeDiff = Date.now() - startedAt;
+        if (timeDiff > 3000 && timeDiff < 15 * 60 * 1000) {
+            const pendingPlan = localStorage.getItem('vdosky_pending_plan') || 'Basic Plan';
+            const pendingDays = parseInt(localStorage.getItem('vdosky_pending_days') || '30', 10);
+            const durationDays = pendingDays > 0 ? pendingDays : 30;
+            const expiryTime = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
+            const autoPayId = 'pay_auto_' + Math.random().toString(36).substring(2, 10);
+
+            localStorage.removeItem('vdosky_payment_started_at');
+            localStorage.setItem('vdosky_subscribed', 'true');
+            localStorage.setItem('vdosky_sub_plan', pendingPlan);
+            localStorage.setItem('vdosky_sub_expiry', String(expiryTime));
+            localStorage.setItem('vdosky_sub_payment_id', autoPayId);
+
+            if (window.Android && typeof window.Android.saveSubscription === 'function') {
+                try { window.Android.saveSubscription(pendingPlan, durationDays, autoPayId); } catch (e) {}
+            }
+
+            closeSubscriptionRequiredPopup();
+            applyVipUiIfSubscribed();
+            showCustomAlert('Subscription Activated!', `Welcome! Your ${pendingPlan} is active for ${durationDays} days. Music is unlocked!`, true);
+        }
+    } catch (e) {}
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') handleMusicAppResumeFromPayment();
+});
+window.addEventListener('focus', handleMusicAppResumeFromPayment);
+
+function handleAutoVerifySubmit(source = 'gate') {
+    const input = document.getElementById('gateAutoVerifyInput');
+    const val = input ? input.value.trim() : '';
+    if (!val || val.length < 4) {
+        alert('Please enter a valid Payment ID or UPI UTR number');
+        if (input) input.focus();
+        return;
+    }
+
+    const pendingPlan = localStorage.getItem('vdosky_pending_plan') || 'Basic Plan';
+    const pendingDays = parseInt(localStorage.getItem('vdosky_pending_days') || '30', 10);
+    const durationDays = pendingDays > 0 ? pendingDays : 30;
+    const expiryTime = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
+
+    localStorage.setItem('vdosky_subscribed', 'true');
+    localStorage.setItem('vdosky_sub_plan', pendingPlan);
+    localStorage.setItem('vdosky_sub_expiry', String(expiryTime));
+    localStorage.setItem('vdosky_sub_payment_id', val);
+
+    if (window.Android && typeof window.Android.saveSubscription === 'function') {
+        try { window.Android.saveSubscription(pendingPlan, durationDays, val); } catch (e) {}
+    }
+
+    closeSubscriptionRequiredPopup();
+    showCustomAlert('Subscription Activated!', `Your ${pendingPlan} is now active for ${durationDays} days. Music playback is unlocked!`, true);
+}
+
+function showCustomAlert(title, message, isSuccess = false) {
+    const overlay = document.getElementById('customAlertOverlay');
+    const titleEl = document.getElementById('customAlertTitle');
+    const msgEl = document.getElementById('customAlertMessage');
+    const iconEl = document.getElementById('customAlertIcon');
+    if (!overlay) return;
+
+    if (titleEl) titleEl.innerText = title || 'Subscribe now & Watch Play Continue';
+    if (msgEl) msgEl.innerHTML = message || 'Recommended UPI Payment<br/>Safe And Secure';
+    if (iconEl) {
+        iconEl.innerHTML = isSuccess 
+            ? '<i class="fa-solid fa-circle-check" style="color: #04AA6D;"></i>' 
+            : '<i class="fa-solid fa-lock" style="color: #e50914;"></i>';
+    }
+    overlay.classList.add('show');
+}
+
+function closeCustomAlert() {
+    const overlay = document.getElementById('customAlertOverlay');
+    if (overlay) overlay.classList.remove('show');
+}
+
+function applyVipUiIfSubscribed() {}
+function triggerStartIoInterstitial() {}
+function triggerFacebookInterstitial() {}
+function triggerSmartlinkInterstitial() {}
+function initMusicAds() {}
+function syncMusicNativeMrecAdView() {}
+function renderAd300x250Iframe() {}
+function renderBanner320x50() {}
+
+// ==========================================
+// MUSIC PLAYER ENGINE
+// ==========================================
+let songsList = [], currentQueue = [], currentPlaylist = [], currentSongIndex = 0;
+const audio = document.getElementById('audioPlayer');
+const range = document.getElementById('audioRange');
+const curTimeSpan = document.getElementById('currentTime');
+const durTimeSpan = document.getElementById('durationTime');
+const playPauseImg = document.getElementById('playPauseImg');
+
+const ICON_PLAY = "play.png";
+const ICON_PAUSE = "pause.png";
+const FALLBACK_PLAY = "https://raw.githubusercontent.com/shortsproeran-creator/mt/main/1784458824699_play.png";
+const FALLBACK_PAUSE = "https://raw.githubusercontent.com/shortsproeran-creator/mt/main/1784459617609_pouse.png";
+
+function setPlayPauseIcon(isPlaying) {
+    if (!playPauseImg) return;
+    if (isPlaying) {
+        playPauseImg.src = ICON_PAUSE;
+        playPauseImg.onerror = function() {
+            this.src = "pouse.png";
+            this.onerror = function() { this.src = FALLBACK_PAUSE; };
+        };
+    } else {
+        playPauseImg.src = ICON_PLAY;
+        playPauseImg.onerror = function() {
+            this.src = FALLBACK_PLAY;
+        };
+    }
+}
+
+function shuffleArray(array) { return [...array].sort(() => Math.random() - 0.5); }
+function formatTime(s) { 
+    if (isNaN(s) || s < 0) return "0:00";
+    let m = Math.floor(s / 60), sec = Math.floor(s % 60); 
+    return m + ":" + (sec < 10 ? "0" + sec : sec); 
+}
+
+async function loadMusic() {
+    try {
+        const res = await fetch("https://raw.githubusercontent.com/appcreator05/post/main/6766846.json");
+        songsList = await res.json();
+        currentQueue = [];
+        songsList.forEach(m => {
+            if (Array.isArray(m.songs)) {
+                m.songs.forEach(s => currentQueue.push({ ...s, poster: m.poster, movie: m.movie, category: m.category }));
+            }
+        });
+        currentPlaylist = shuffleArray(currentQueue);
+        
+        renderMusicList(currentPlaylist.slice(0, 100));
+        loadCategories();
+
+        setTimeout(() => {
+            if (currentPlaylist.length > 0 && isUserSubscribed()) {
+                playMusic(0, true); 
+            }
+        }, 800);
+    } catch (err) {
+        console.error("Failed to load songs:", err);
+        const list = document.getElementById('musicList');
+        if (list) {
+            list.innerHTML = `<div style="text-align:center; padding:40px; color:#ff3b30;">Failed to load music playlist. Please check internet connection.</div>`;
+        }
+    }
+}
+
+function renderMusicList(songs) {
+    const list = document.getElementById('musicList');
+    if (!list) return;
+    const fragment = document.createDocumentFragment();
+    list.innerHTML = "";
+
+    const displayLimit = songs.slice(0, 200); 
+
+    displayLimit.forEach((song, i) => {
+        const isPlaying = (song.id === (currentPlaylist[currentSongIndex] ? currentPlaylist[currentSongIndex].id : null));
+        const div = document.createElement('div');
+        div.className = 'song-item' + (isPlaying ? ' active' : '');
+        
+        div.innerHTML = `<img src="${song.poster || ''}" referrerpolicy="no-referrer" loading="lazy" class="song-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=60';" onclick="openModal('${song.poster}', event)">
+                         <div class="song-text-container" onclick="playMusic(${i})">
+                             <strong>${song.title}</strong>
+                             <small>${song.movie || ''}</small>
+                         </div>`;
+        fragment.appendChild(div);
+    });
+
+    list.appendChild(fragment);
+}
+
+function openModal(imgSrc, event) { 
+    if (event) event.stopPropagation(); 
+    document.getElementById('modalImg').src = imgSrc; 
+    document.getElementById('imageModal').style.display = 'flex'; 
+    const miniPlayer = document.getElementById('miniPlayer');
+    if (miniPlayer && currentPlaylist && currentPlaylist.length > 0) {
+        miniPlayer.style.display = 'flex';
+    }
+}
+
+function closeModal() { 
+    document.getElementById('imageModal').style.display = 'none'; 
+}
+
+function playMusic(index, isInitial = false) {
+    if (!currentPlaylist || index >= currentPlaylist.length) return;
+    const song = currentPlaylist[index]; 
+
+    // Bina subscription kore music play hobe na
+    if (!isUserSubscribed()) {
+        showSubscriptionRequiredPopup('music', song ? song.title : 'Online Music');
+        return;
+    }
+
+    currentSongIndex = index;
+
+    audio.src = `https://www.googleapis.com/drive/v3/files/${song.id}?alt=media&key=AIzaSyAwS9f57z785lDD9aKedEEJVol_-P518v0`;
+    document.getElementById('nowPlaying').innerText = song.title + (song.movie ? ` • ${song.movie}` : '');
+    
+    const miniPlayer = document.getElementById('miniPlayer');
+    if (miniPlayer) miniPlayer.style.display = 'flex';
+    
+    if (document.getElementById('imageModal').style.display === 'flex') {
+        document.getElementById('modalImg').src = song.poster;
+    }
+    
+    const playPromise = audio.play(); 
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            setPlayPauseIcon(true);
+        }).catch(err => {
+            setPlayPauseIcon(false);
+        });
+    }
+
+    renderMusicList(currentPlaylist);
+    
+    setTimeout(() => {
+        const activeElement = document.querySelector('.song-item.active');
+        if (activeElement) activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 120);
+}
+
+function nextSong() { 
+    if (currentPlaylist.length === 0) return;
+    currentSongIndex = (currentSongIndex + 1) % currentPlaylist.length; 
+    playMusic(currentSongIndex); 
+}
+
+function prevSong() { 
+    if (currentPlaylist.length === 0) return;
+    currentSongIndex = (currentSongIndex - 1 + currentPlaylist.length) % currentPlaylist.length; 
+    playMusic(currentSongIndex); 
+}
+
+function togglePlay() {
+    if (!isUserSubscribed()) {
+        showSubscriptionRequiredPopup('music', 'Music Player');
+        return;
+    }
+    if (audio.paused) {
+        audio.play().then(() => {
+            setPlayPauseIcon(true); 
+        }).catch(() => {});
+    } else {
+        audio.pause();
+        setPlayPauseIcon(false);
+    }
+}
+
+audio.addEventListener('timeupdate', () => {
+    if (!isNaN(audio.duration) && audio.duration > 0) {
+        range.value = (audio.currentTime / audio.duration) * 100;
+        curTimeSpan.innerText = formatTime(audio.currentTime);
+        durTimeSpan.innerText = formatTime(audio.duration);
+    }
+});
+
+audio.addEventListener('loadedmetadata', () => {
+    durTimeSpan.innerText = formatTime(audio.duration);
+});
+
+range.addEventListener('input', () => {
+    if (!isNaN(audio.duration)) {
+        audio.currentTime = (range.value / 100) * audio.duration;
+    }
+});
+
+audio.addEventListener('ended', nextSong);
+
+function toggleSidebar() { 
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    if (sidebar.style.width === "270px") {
+        sidebar.style.width = "0";
+        if (overlay) overlay.style.display = "none";
+    } else {
+        sidebar.style.width = "270px";
+        if (overlay) overlay.style.display = "block";
+    }
+}
+
+function loadCategories() { 
+    const sidebar = document.getElementById("sidebar"); 
+    [...new Set(songsList.map(item => item.category))].filter(Boolean).forEach(cat => { 
+        const a = document.createElement("a"); 
+        a.href = "javascript:void(0)"; 
+        a.innerHTML = `<i class="fa-solid fa-compact-disc" style="margin-right: 8px; color: #ff3b30;"></i> ${cat}`; 
+        
+        a.onclick = (e) => { 
+            e.preventDefault(); 
+            e.stopPropagation(); 
+            filterByCategory(cat);
+            toggleSidebar();
+        }; 
+        sidebar.appendChild(a); 
+    }); 
+}
+
+function filterByCategory(cat) { 
+    audio.pause(); 
+    audio.currentTime = 0;
+    setPlayPauseIcon(false);
+    document.getElementById('nowPlaying').innerText = "Select a song (" + cat + ")";
+    
+    const filteredSongs = shuffleArray(currentQueue.filter(s => s.category === cat));
+    currentPlaylist = filteredSongs;
+    currentSongIndex = 0; 
+    
+    renderMusicList(currentPlaylist); 
+}
+
+let searchTimeout;
+function filterMusicList() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        let val = document.getElementById('musicSearch').value.toLowerCase().trim();
+        if (!val) {
+            currentPlaylist = currentQueue;
+        } else {
+            let filtered = currentQueue.filter(s => 
+                (s.title && s.title.toLowerCase().includes(val)) || 
+                (s.movie && s.movie.toLowerCase().includes(val)) ||
+                (s.category && s.category.toLowerCase().includes(val))
+            );
+            currentPlaylist = filtered; 
+        }
+        renderMusicList(currentPlaylist); 
+    }, 300);
+}
+
+function stopMusic() {
+    audio.pause(); 
+    audio.currentTime = 0;
+    setPlayPauseIcon(false);
+    document.getElementById('miniPlayer').style.display = 'none';
+}
+  
+function showAllSongs() { 
+    currentPlaylist = shuffleArray(currentQueue); 
+    renderMusicList(currentPlaylist); 
+    toggleSidebar(); 
+}
+
+applyVipUiIfSubscribed();
+window.addEventListener('DOMContentLoaded', () => {
+    applyVipUiIfSubscribed();
+    if (!isUserSubscribed()) {
+        showSubscriptionRequiredPopup('music', 'Music Library');
+    }
+});
+loadMusic();
+</script>
+
+</body>
+</html>

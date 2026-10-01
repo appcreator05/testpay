@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Payment Successful - VDOSky</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #111;
+            border: 2px solid #04AA6D;
+            border-radius: 16px;
+            padding: 36px 24px;
+            text-align: center;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(4, 170, 109, 0.25);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(4, 170, 109, 0.15);
+            border: 2px solid #04AA6D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #04AA6D;
+            margin: 0 auto 20px auto;
+        }
+        h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        p { font-size: 14px; color: #aaa; margin-bottom: 24px; line-height: 1.5; }
+        .details-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 24px;
+            text-align: left;
+            font-size: 13px;
+        }
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .details-row:last-child { margin-bottom: 0; }
+        .details-label { color: #888; }
+        .details-val { color: #fff; font-weight: 600; }
+        .btn {
+            display: block;
+            width: 100%;
+            background: #e50914;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .btn:hover { background: #b80710; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #444;
+            color: #ccc;
+        }
+        .btn-outline:hover { background: #222; color: #fff; }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-circle">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <h2>Payment Successful!</h2>
+        <p>Your subscription is being activated with full validity. Returning to VDOSky app...</p>
+
+        <div class="details-box">
+            <div class="details-row">
+                <span class="details-label">Plan</span>
+                <span class="details-val" id="planVal">Basic Plan</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Validity</span>
+                <span class="details-val" id="durationVal">2 Days</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Payment ID</span>
+                <span class="details-val" id="paymentIdVal" style="font-family: monospace; font-size: 12px;">Verifying...</span>
+            </div>
+        </div>
+
+        <a href="javascript:void(0)" class="btn" id="openAppBtn" onclick="returnToApp()">
+            <span class="spinner" id="btnSpinner"></span>
+            <b>OPEN VDOSKY APP NOW</b>
+        </a>
+        <a href="index.html" class="btn btn-outline">Go to Web Portal</a>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const plan = params.get('plan') || localStorage.getItem('vdosky_pending_plan') || 'Basic Plan';
+        const duration = parseInt(params.get('duration') || localStorage.getItem('vdosky_pending_days') || '2', 10);
+        const paymentId = params.get('razorpay_payment_id') || params.get('payment_id') || 'pay_' + Date.now();
+
+        document.getElementById('planVal').innerText = plan;
+        document.getElementById('durationVal').innerText = duration + ' Day(s)';
+        document.getElementById('paymentIdVal').innerText = paymentId;
+
+        // Save locally to browser
+        try {
+            const expiryTime = Date.now() + (duration * 24 * 60 * 60 * 1000);
+            localStorage.setItem('vdosky_subscribed', 'true');
+            localStorage.setItem('vdosky_sub_plan', plan);
+            localStorage.setItem('vdosky_sub_expiry', String(expiryTime));
+            localStorage.setItem('vdosky_sub_payment_id', paymentId);
+        } catch(e) {}
+
+        // Save to Android native SharedPreferences if opened inside app WebView
+        if (window.Android && typeof window.Android.saveSubscription === 'function') {
+            try {
+                window.Android.saveSubscription(plan, duration, paymentId);
+            } catch (e) {}
+        }
+
+        function returnToApp() {
+            // Android Chrome Intent - opens installed VDOSky APK directly by package name (com.vdosky.app)
+            const intentUrl = `intent://payment/success?plan=${encodeURIComponent(plan)}&duration=${duration}&payment_id=${encodeURIComponent(paymentId)}#Intent;scheme=vdosky;package=com.vdosky.app;end`;
+            const customSchemeUrl = `vdosky://payment/success?plan=${encodeURIComponent(plan)}&duration=${duration}&payment_id=${encodeURIComponent(paymentId)}`;
+
+            try {
+                window.location.href = intentUrl;
+            } catch(e) {
+                window.location.href = customSchemeUrl;
+            }
+
+            // Fallback after 2.5s if app is not installed or on desktop browser
+            setTimeout(() => {
+                window.location.href = `index.html?view=home&status=subscribed&plan=${encodeURIComponent(plan)}`;
+            }, 2500);
+        }
+
+        // Automatic redirect after 1 second
+        setTimeout(() => {
+            returnToApp();
+        }, 1000);
+    </script>
+</body>
+</html>
