@@ -70,30 +70,6 @@ public class MainActivity extends BridgeActivity {
 
     private AndroidNativeInterface nativeInterface;
 
-    // Start.io Production App ID
-    public static final String STARTIO_APP_ID = "203877183";
-
-    private Banner startIoBanner;
-    private FrameLayout adContainerLayout;
-    private FrameLayout mrecContainerLayout;
-    private Mrec startIoMrec;
-    private boolean isBannerLoaded = false;
-    private boolean isMrecLoaded = false;
-    private boolean isMrecLoading = false;
-
-    // Multi-slot Start.io Mrec 300x250 Banner management (Lag-free scrolling)
-    private final Map<String, FrameLayout> mrecSlotContainers = new HashMap<>();
-    private final Map<String, Mrec> mrecSlotAds = new HashMap<>();
-    private final Map<String, Boolean> mrecSlotLoaded = new HashMap<>();
-
-    private StartAppAd startAppInterstitial;
-    private boolean isInterstitialLoading = false;
-
-    private StartAppAd startAppRewarded;
-    private boolean isRewardedLoading = false;
-    private final Handler rewardedHandler = new Handler(Looper.getMainLooper());
-    private static final long REWARDED_INTERVAL_MS = 10 * 60 * 1000L; // 10 minutes recurring
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(AppUpdatePlugin.class);
@@ -833,24 +809,6 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     public void onDestroy() {
-        try {
-            rewardedHandler.removeCallbacks(rewardedRunnable);
-            for (FrameLayout layout : mrecSlotContainers.values()) {
-                if (layout != null) {
-                    layout.removeAllViews();
-                }
-            }
-            mrecSlotContainers.clear();
-            mrecSlotAds.clear();
-            mrecSlotLoaded.clear();
-
-            if (mrecContainerLayout != null) {
-                mrecContainerLayout.removeAllViews();
-            }
-            if (adContainerLayout != null) {
-                adContainerLayout.removeAllViews();
-            }
-        } catch (Exception ignored) {}
         super.onDestroy();
     }
 }
